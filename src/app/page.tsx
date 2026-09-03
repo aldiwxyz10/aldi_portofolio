@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Mail, ExternalLink, Code2, ChevronDown, Download, MonitorSmartphone } from "lucide-react";
+import {
+  Mail,
+  ExternalLink,
+  Code2,
+  Download,
+  MonitorSmartphone,
+  Server,
+  Database,
+  Palette,
+  ImageOff,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 // --- Social Icons ---
@@ -17,9 +27,15 @@ const InstagramIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
 );
 
-
 // Update this to match your actual GitHub username
 const GITHUB_USERNAME = "aldiwxyz10";
+
+// Optional: hand-pick a screenshot for any repo here (recommended for repos
+// without a live "homepage" URL set on GitHub, e.g. mobile apps or APIs).
+// Example: { "nama-repo-kamu": "/projects/nama-repo.png" }
+const PROJECT_IMAGES: Record<string, string> = {
+  // "portfolio-website": "/projects/portfolio-website.png",
+};
 
 interface Repository {
   id: number;
@@ -29,6 +45,97 @@ interface Repository {
   homepage: string;
   topics: string[];
   stargazers_count: number;
+}
+
+// Auto screenshot for repos that have a live "homepage" link set on GitHub.
+// Falls back to a manual entry in PROJECT_IMAGES, then to an icon placeholder.
+function getProjectImage(repo: Repository): string | null {
+  if (PROJECT_IMAGES[repo.name]) return PROJECT_IMAGES[repo.name];
+  if (repo.homepage) {
+    return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(repo.homepage)}?w=900&h=560`;
+  }
+  return null;
+}
+
+// --- Skill categories ---
+type Skill = { name: string; value: number };
+type SkillGroup = { title: string; icon: React.ElementType; skills: Skill[] };
+
+const SKILL_GROUPS: SkillGroup[] = [
+  {
+    title: "Frontend",
+    icon: Code2,
+    skills: [
+      { name: "HTML & CSS", value: 90 },
+      { name: "JavaScript", value: 85 },
+      { name: "Tailwind CSS", value: 90 },
+      { name: "React / Next.js", value: 75 },
+    ],
+  },
+  {
+    title: "Backend",
+    icon: Server,
+    skills: [
+      { name: "PHP", value: 80 },
+      { name: "Laravel", value: 80 },
+    ],
+  },
+  {
+    title: "Database & Tools",
+    icon: Database,
+    skills: [
+      { name: "MySQL", value: 78 },
+      { name: "Git", value: 85 },
+      { name: "GitHub", value: 85 },
+    ],
+  },
+  {
+    title: "UI / UX",
+    icon: Palette,
+    skills: [
+      { name: "Figma", value: 75 },
+      { name: "Adobe XD", value: 60 },
+      { name: "Wireframing", value: 70 },
+    ],
+  },
+];
+
+function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
+  return (
+    <div className="mb-12">
+      <div className="flex items-center gap-3 mb-3">
+        <span className="h-7 w-1 rounded-full bg-gradient-to-b from-sky-400 to-blue-600" />
+        <span className="text-xs font-medium text-blue-400/80">{eyebrow}</span>
+      </div>
+      <h2 className="text-2xl md:text-4xl font-semibold tracking-tight text-white mb-2">{title}</h2>
+      <p className="text-gray-400 text-sm max-w-md leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function ProjectImage({ repo }: { repo: Repository }) {
+  const [failed, setFailed] = useState(false);
+  const src = getProjectImage(repo);
+
+  if (!src || failed) {
+    return (
+      <div className="h-40 w-full rounded-t-xl bg-gradient-to-br from-[#0e1524] to-[#0a0d16] border-b border-white/5 flex flex-col items-center justify-center gap-2">
+        <ImageOff className="w-5 h-5 text-blue-500/50" />
+        <span className="text-[11px] text-gray-600">No preview yet</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-40 w-full overflow-hidden rounded-t-xl border-b border-white/5 bg-[#0a0d16]">
+      <img
+        src={src}
+        alt={`Screenshot of ${repo.name}`}
+        onError={() => setFailed(true)}
+        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+      />
+    </div>
+  );
 }
 
 export default function Portfolio() {
@@ -53,20 +160,19 @@ export default function Portfolio() {
     fetchProjects();
   }, []);
 
-  // Tech Icons from SimpleIcons CDN
   const techLogos = [
-    { name: "HTML5", src: "https://cdn.simpleicons.org/html5/E34F26" },
-    { name: "CSS3", src: "https://cdn.simpleicons.org/css3/1572B6" },
-    { name: "JavaScript", src: "https://cdn.simpleicons.org/javascript/F7DF1E" },
-    { name: "PHP", src: "https://cdn.simpleicons.org/php/777BB4" },
-    { name: "Laravel", src: "https://cdn.simpleicons.org/laravel/FF2D20" },
-    { name: "React", src: "https://cdn.simpleicons.org/react/61DAFB" },
+    { name: "HTML5", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
+    { name: "CSS3", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
+    { name: "JavaScript", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+    { name: "React", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+    { name: "Laravel", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" },
+    { name: "MySQL", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-gray-100 font-sans selection:bg-blue-500/30">
-      {/* Navbar Option */}
-      <nav className="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
+    <div className="min-h-screen bg-[#050608] text-gray-100 font-sans selection:bg-blue-500/30">
+      {/* Navbar */}
+      <nav className="fixed top-0 w-full z-50 bg-[#050608]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <span className="font-bold text-lg tracking-tighter">
             Risyaldi<span className="text-blue-500">.</span>
@@ -81,16 +187,29 @@ export default function Portfolio() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative pt-28 pb-16 flex items-center justify-center overflow-hidden">
-        {/* Background glow effects */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] opacity-60 pointer-events-none" />
+      <section id="home" className="relative pt-28 pb-20 flex items-center justify-center overflow-hidden">
+        {/* Aurora blobs — the one deliberate motion moment on the page */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[10%] w-[420px] h-[420px] rounded-full bg-blue-600/20 blur-[120px] animate-[drift1_18s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-15%] right-[5%] w-[380px] h-[380px] rounded-full bg-sky-500/15 blur-[110px] animate-[drift2_22s_ease-in-out_infinite]" />
+        </div>
+        <style>{`
+          @keyframes drift1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(40px, 30px); }
+          }
+          @keyframes drift2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -25px); }
+          }
+        `}</style>
 
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center relative z-10 w-full">
           {/* Left Text */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             className="space-y-5 text-center md:text-left"
           >
             <div className="inline-block px-3 py-1 rounded bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 border border-blue-500/20">
@@ -98,8 +217,8 @@ export default function Portfolio() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              Hi, I'm <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+              Hi, I&apos;m <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-400 to-blue-600">
                 Risyaldi Wildan P.
               </span>
             </h1>
@@ -120,7 +239,7 @@ export default function Portfolio() {
 
             {/* Tech Logos */}
             <div className="pt-6">
-              <p className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wider">Technologies I Use</p>
+              <p className="text-xs text-gray-500 font-medium mb-3">Technologies I use</p>
               <div className="flex items-center justify-center md:justify-start gap-4">
                 {techLogos.map((tech) => (
                   <img key={tech.name} src={tech.src} alt={tech.name} className="h-7 w-auto hover:scale-110 transition-transform opacity-90 hover:opacity-100" title={tech.name} />
@@ -142,30 +261,25 @@ export default function Portfolio() {
             </div>
           </motion.div>
 
-          {/* Right Image / Muka */}
+          {/* Right Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
             className="flex justify-center relative mt-10 md:mt-0"
           >
-            {/* Profile Picture Placeholder - Lebih Kecil / Fit Proportions */}
             <div className="w-[280px] h-[280px] md:w-[360px] md:h-[360px] relative rounded-full p-2 bg-gradient-to-tr from-blue-900/40 to-blue-500/10 border border-blue-500/20 shadow-2xl flex items-center justify-center">
-
-              {/* Spinning decorative border */}
               <div className="absolute inset-0 rounded-full border border-dashed border-blue-500/30 animate-[spin_15s_linear_infinite]" />
 
-              {/* Inner Image Container */}
               <div className="w-full h-full rounded-full bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center relative border-2 border-transparent z-10">
-                {/* USER INSTRUCTION: Replace this img src with your actual photo URL or file in /public */}
+                {/* Replace this placeholder with: <img src="/foto-anda.jpg" className="w-full h-full object-cover" /> */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-blue-950/40 backdrop-blur-[2px]">
                   <MonitorSmartphone className="w-8 h-8 text-blue-400 mb-3" />
                   <p className="text-blue-300 font-medium text-sm mb-1">Foto Profil Anda</p>
-                  <p className="text-xs text-gray-400">Ganti dengan `<img src="/foto-anda.jpg" />`</p>
+                  <p className="text-xs text-gray-400">Ganti dengan `&lt;img src=&quot;/foto-anda.jpg&quot; /&gt;`</p>
                 </div>
               </div>
 
-              {/* Floating Decorative Elements */}
               <div className="absolute -right-4 top-10 bg-[#0a0a0a] p-3 rounded-lg border border-white/10 shadow-lg hidden md:block">
                 <Code2 className="w-5 h-5 text-blue-500" />
               </div>
@@ -174,33 +288,49 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Skills Section (Compact) */}
-      <section id="skills" className="py-16 bg-[#080808] border-t border-b border-white/5">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">My <span className="text-blue-500">Skills</span></h2>
-            <p className="text-gray-400 text-sm">Technologies I work with to bring ideas to life.</p>
-          </div>
+      {/* Skills Section */}
+      <section id="skills" className="py-20 bg-[#08090c] border-t border-b border-white/5">
+        <div className="max-w-5xl mx-auto px-6">
+          <SectionHeading
+            eyebrow="What I work with"
+            title="Skills"
+            description="Grouped by where they sit in the stack — from what people see to what powers it behind the scenes."
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { name: 'HTML & CSS', value: 90 },
-              { name: 'JavaScript', value: 85 },
-              { name: 'PHP / Laravel', value: 80 },
-              { name: 'React / Next.js', value: 75 },
-              { name: 'Tailwind CSS', value: 90 },
-              { name: 'Git & GitHub', value: 85 },
-            ].map((skill, idx) => (
-              <div key={idx}>
-                <div className="flex justify-between items-end mb-2">
-                  <span className="text-sm font-medium text-gray-200">{skill.name}</span>
-                  <span className="text-xs text-gray-500">{skill.value}%</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {SKILL_GROUPS.map((group) => {
+              const Icon = group.icon;
+              return (
+                <div
+                  key={group.title}
+                  className="rounded-xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-6"
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <Icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <h3 className="text-sm font-semibold text-gray-200">{group.title}</h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    {group.skills.map((skill) => (
+                      <div key={skill.name}>
+                        <div className="flex justify-between items-end mb-1.5">
+                          <span className="text-sm text-gray-300">{skill.name}</span>
+                          <span className="text-xs text-gray-500">{skill.value}%</span>
+                        </div>
+                        <div className="w-full bg-[#111] rounded-full h-1.5 border border-white/5">
+                          <div
+                            className="h-1.5 rounded-full bg-gradient-to-r from-sky-400 to-blue-600"
+                            style={{ width: `${skill.value}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="w-full bg-[#111] rounded-full h-1.5 border border-white/5">
-                  <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: `${skill.value}%` }}></div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -208,55 +338,52 @@ export default function Portfolio() {
       {/* Projects Section */}
       <section id="projects" className="py-20 relative">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="mb-12 text-center md:text-left">
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">Latest <span className="text-blue-500">Projects</span></h2>
-            <p className="text-gray-400 text-sm max-w-xl">
-              Here are some of my recent open-source repositories fetched directly from GitHub.
-            </p>
-          </div>
+          <SectionHeading
+            eyebrow="Recent work"
+            title="Latest Projects"
+            description="Pulled live from GitHub, with previews of what's actually live."
+          />
 
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-48 rounded-xl bg-white/5 animate-pulse border border-white/5" />
+                <div key={i} className="h-64 rounded-xl bg-white/5 animate-pulse border border-white/5" />
               ))}
             </div>
           ) : projects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.slice(0, 6).map((repo, idx) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
+              {projects.slice(0, 6).map((repo) => (
+                <div
                   key={repo.id}
-                  className="group relative bg-[#0a0a0a] rounded-xl p-5 border border-white/5 hover:border-blue-500/40 transition-all flex flex-col h-full hover:shadow-[0_8px_30px_-15px_rgba(37,99,235,0.2)]"
+                  className="group relative bg-[#0a0a0a] rounded-xl border border-white/5 hover:border-blue-500/40 transition-all flex flex-col h-full overflow-hidden hover:shadow-[0_8px_30px_-15px_rgba(37,99,235,0.25)]"
                 >
-                  <div className="flex justify-between items-start mb-3">
-                    <Code2 className="w-6 h-6 text-blue-500" />
-                    <a href={repo.html_url} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors" title="View Source">
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
+                  <ProjectImage repo={repo} />
 
-                  <h3 className="text-lg font-bold mb-2 group-hover:text-blue-400 transition-colors line-clamp-1">
-                    {repo.name}
-                  </h3>
-
-                  <p className="text-gray-400 text-xs mb-5 flex-grow line-clamp-2 leading-relaxed">
-                    {repo.description || "No description provided."}
-                  </p>
-
-                  {repo.topics && repo.topics.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-white/5">
-                      {repo.topics.slice(0, 3).map(topic => (
-                        <span key={topic} className="text-[10px] font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 uppercase tracking-wider">
-                          {topic}
-                        </span>
-                      ))}
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-lg font-bold group-hover:text-blue-400 transition-colors line-clamp-1">
+                        {repo.name}
+                      </h3>
+                      <a href={repo.html_url} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors shrink-0 ml-2" title="View Source">
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
                     </div>
-                  )}
-                </motion.div>
+
+                    <p className="text-gray-400 text-xs mb-5 flex-grow line-clamp-2 leading-relaxed">
+                      {repo.description || "No description provided."}
+                    </p>
+
+                    {repo.topics && repo.topics.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-white/5">
+                        {repo.topics.slice(0, 3).map((topic) => (
+                          <span key={topic} className="text-[10px] font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">
+                            {topic}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           ) : (
@@ -276,11 +403,11 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section & Footer */}
-      <section id="contact" className="py-20 border-t border-white/5 bg-[#080808]">
+      <section id="contact" className="py-20 border-t border-white/5 bg-[#08090c]">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold mb-4">Let's Work <span className="text-blue-500">Together</span></h2>
+          <h2 className="text-2xl md:text-4xl font-semibold tracking-tight text-white mb-4">Let&apos;s work together</h2>
           <p className="text-gray-400 text-sm mb-8">
-            I'm always open to discussing new projects, creative ideas, or opportunities.
+            I&apos;m always open to discussing new projects, creative ideas, or opportunities.
           </p>
 
           <a href="mailto:prgmmn94@gmail.com" className="inline-flex items-center justify-center space-x-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all shadow-[0_0_15px_-3px_rgba(37,99,235,0.4)]">
