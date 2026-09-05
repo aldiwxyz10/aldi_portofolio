@@ -556,7 +556,7 @@ export default function Portfolio() {
             className="space-y-5 text-center md:text-left"
           >
             <div className="inline-block px-3 py-1 rounded bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 border border-blue-500/20">
-              Full Stack Web Developer
+              Junior Web Developer
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
