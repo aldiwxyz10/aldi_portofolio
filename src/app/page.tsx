@@ -154,29 +154,22 @@ const EXPERIENCE: ExperienceGroup[] = [
     subtitle: "Universitas Gunadarma",
     roles: [
       {
-        title: "Programmer Divisi Website",
-        period: "September 2025 – Sekarang",
-        description:
-          "Membuat dan Mengelola website dari Laboratorium Manajemen Menengah, yaitu v-lab.gunadarma.ac.id menggunakan framework Laravel. Mengelola database MySQL, serta mengoptimalkan performa website agar lebih cepat dan responsif.",
-      },
-      {
         title: "Asisten Programmer",
         period: "September 2025 – Sekarang",
         description: "Mengawasi pembelajaran saat praktikum, dan mengatasi masalah yang muncul saat praktikan menggunakan software di PC praktikum dari Lab. Manajemen Menengah.",
       },
+      {
+        title: "Programmer Divisi Website",
+        period: "September 2025 – September 2026",
+        description: "Membuat dan Mengelola website dari Laboratorium Manajemen Menengah, yaitu v-lab.gunadarma.ac.id menggunakan framework Laravel. Mengelola database MySQL, serta mengoptimalkan performa website agar lebih cepat dan responsif.",
+      },
+      {
+        title: "Wakil Koordinator Programmer",
+        period: "September 2026 – Sekarang",
+        description: "Mengatur dan mengelola aktivitas programmer di Laboratorium Manajemen Menengah, seperti Maintenance PC praktikum di berbagai region (Kalimalang, Depok, Salemba, Karawaci, Cengkareng).",
+      },
     ],
   },
-  //{
-    //org: "Proyek / Organisasi Lain (opsional)",
-    //subtitle: "Kota, Indonesia",
-    //roles: [
-      //{
-        //title: "Peran Kamu",
-        //period: "Bulan Tahun – Bulan Tahun",
-        //description: "Tambahkan pengalaman lain di sini, atau hapus blok ini kalau tidak perlu.",
-      //},
-    //],
-  //},
 ];
 
 const NAV_LINKS = [
@@ -708,17 +701,13 @@ export default function Portfolio() {
             <Reveal delay={0.15} className="space-y-4">
               <div className="rounded-xl overflow-hidden border border-white/5 bg-gradient-to-br from-[#0e1524] to-[#0a0d16] aspect-[16/10] flex flex-col items-center justify-center">
                 {<img src="/mamen.jpeg" className="w-full h-full object-cover" /> }
-                <ImageOff className="w-5 h-5 text-blue-500/50 mb-2" />
-                <span className="text-[11px] text-gray-600">Add a photo here</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-xl overflow-hidden border border-white/5 bg-gradient-to-br from-[#0e1524] to-[#0a0d16] aspect-square flex flex-col items-center justify-center">
-                  <ImageOff className="w-4 h-4 text-blue-500/50 mb-1" />
-                  <span className="text-[10px] text-gray-600">Photo</span>
+                  {<img src="/mamen2.jpg" className="w-full h-full object-cover" /> }
                 </div>
                 <div className="rounded-xl overflow-hidden border border-white/5 bg-gradient-to-br from-[#0e1524] to-[#0a0d16] aspect-square flex flex-col items-center justify-center">
-                  <ImageOff className="w-4 h-4 text-blue-500/50 mb-1" />
-                  <span className="text-[10px] text-gray-600">Photo</span>
+                  {<img src="/mamen3.jpg" className="w-full h-full object-cover" /> }
                 </div>
               </div>
             </Reveal>
