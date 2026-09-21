@@ -707,7 +707,7 @@ export default function Portfolio() {
                   {<img src="/mamen2.jpg" className="w-full h-full object-cover" /> }
                 </div>
                 <div className="rounded-xl overflow-hidden border border-white/5 bg-gradient-to-br from-[#0e1524] to-[#0a0d16] aspect-square flex flex-col items-center justify-center">
-                  {<img src="/mamen3.jpg" className="w-full h-full object-cover" /> }
+                  {<img src="/serti.jpg" className="w-full h-full object-cover" /> }
                 </div>
               </div>
             </Reveal>
