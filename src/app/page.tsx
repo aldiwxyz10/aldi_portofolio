@@ -607,7 +607,7 @@ export default function Portfolio() {
               <div className="absolute inset-0 rounded-full border border-dashed border-blue-500/30 animate-[spin_15s_linear_infinite]" />
 
               <div className="w-full h-full rounded-full bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center relative border-2 border-transparent z-10">
-                <img src="/profil.jpg" className="w-full h-full object-cover" alt="Risyaldi Wildan Pratama" />
+                <img src="/profil2.jpeg" className="w-full h-full object-cover" alt="Risyaldi Wildan Pratama" />
               </div>
 
               <div className="absolute -right-4 top-10 bg-[#0a0a0a] p-3 rounded-lg border border-white/10 shadow-lg hidden md:block">
